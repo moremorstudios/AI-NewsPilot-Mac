@@ -5,14 +5,14 @@
   "main": "electron/main.js",
   "private": true,
   "scripts": {
-    "start": "electron .",
-    "dev": "electron .",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder --publish=never",
-    "dist:mac": "electron-builder --mac dmg zip --publish=never",
-    "dist:mac:x64": "electron-builder --mac dmg zip --x64 --publish=never",
-    "dist:mac:arm64": "electron-builder --mac dmg zip --arm64 --publish=never"
-  },
+  "start": "electron .",
+  "dev": "electron .",
+  "pack": "electron-builder --dir",
+  "dist": "electron-builder --publish=never",
+  "dist:mac": "electron-builder --mac dmg zip --publish=never",
+  "dist:mac:x64": "electron-builder --mac dmg zip --x64 --publish=never",
+  "dist:mac:arm64": "electron-builder --mac dmg zip --arm64 --publish=never"
+},
   "devDependencies": {
     "electron": "40.0.0",
     "electron-builder": "26.5.0"
