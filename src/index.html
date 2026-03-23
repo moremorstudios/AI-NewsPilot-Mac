@@ -1,0 +1,367 @@
+<!-- FILE: src/index.html -->
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+      <meta http-equiv="Content-Security-Policy"
+  content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' data: blob:;
+    media-src 'self' blob: file:;
+    connect-src 'self' https://api.openai.com;
+    frame-src 'self' https://moremor.com;
+    child-src 'self' https://moremor.com;
+    object-src 'none';
+    base-uri 'self';
+  ">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI NewsPilot — Hybrid News Generator</title>
+
+  <link rel="icon" href="./assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/layout.css" />
+  <link rel="stylesheet" href="./css/dark.css" />
+  <meta name="theme-color" content="#111" />
+</head>
+<body>
+
+  <header class="np-header np-wrap">
+    <div class="np-brand">
+  <img id="imgLogo" class="np-logo"
+       src="./assets/logo/newspilot-logo-horizontal.png"
+       alt="AI NewsPilot"
+       onerror="this.style.visibility='hidden'">
+
+  <!-- Erişilebilirlik için kalsın, ekranda görünmesin -->
+  <div class="sr-only">
+    <h1 class="np-title">AI NewsPilot</h1>
+    <div class="np-sub">Hybrid News Generator — Local + OpenAI</div>
+  </div>
+</div>
+
+
+
+    <div class="np-header-actions">
+      <label class="np-label" style="margin:0">
+        <span class="sr-only"></span>
+        <select id="selLang" class="np-input" title="Language" style="min-width:160px"></select>
+      </label>
+
+      <button id="btnUpgrade" class="btn" type="button" title="Activate">Activate</button>
+      <button id="btnToggleDark" class="btn btn-secondary" type="button" title="Theme">🌙</button>
+<!-- ABOUT / DOCS BUTTON (QUESTION MARK) -->
+    <button id="btnDocs" class="btn btn-secondary" type="button" title="About AI NewsPilot">
+      ?
+    </button>
+    </div>
+  </header>
+
+  <main class="np-main np-wrap">
+
+    <!-- LEFT COLUMN -->
+    <aside class="np-panel">
+
+      <div class="np-section">
+  <div class="np-section-title np-section-title-main">Generate Your News</div>
+  <div class="np-row" style="gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap">
+
+  <div class="np-row" style="gap:10px; flex-wrap:wrap; align-items:center;">
+    <label class="np-label" style="margin:0; display:flex; align-items:center; gap:8px;">
+      <input type="radio" name="engine" value="local" checked />
+      <span>Local AI</span>
+    </label>
+    <label class="np-label" style="margin:0; display:flex; align-items:center; gap:8px;">
+      <input type="radio" name="engine" value="openai" />
+      <span>OpenAI</span>
+    </label>
+  </div>
+
+  <button id="btnKeySetupNews" class="btn btn-secondary" type="button" title="OpenAI Key Setup">
+    Setup
+  </button>
+</div>
+
+<div class="np-hint" id="keyStatusNews" style="margin-top:8px; display:none;"></div>
+
+
+      <div class="np-section">
+        <div class="np-section-title">News Settings (5W1H)</div>
+
+        <div class="np-field">
+          <label class="np-label">Who</label>
+          <textarea id="inpWho" class="np-input np-autogrow" rows="1" style="resize:none; overflow:hidden;" placeholder="Who is involved? (people, organisations, institutions)"></textarea>
+        </div>
+        <div class="np-field">
+          <label class="np-label">What</label>
+          <textarea id="inpWhat" class="np-input np-autogrow" rows="1" style="resize:none; overflow:hidden;" placeholder="What exactly happened? (key event in one sentence)"></textarea>
+        </div>
+        <div class="np-field">
+          <label class="np-label">When</label>
+          <textarea id="inpWhen" class="np-input np-autogrow" rows="1" style="resize:none; overflow:hidden;" placeholder="When did it happen? (date, time, time-frame)"></textarea>
+        </div>
+        <div class="np-field">
+          <label class="np-label">Where</label>
+          <textarea id="inpWhere" class="np-input np-autogrow" rows="1" style="resize:none; overflow:hidden;" placeholder="Where did it happen? (city, venue, region)"></textarea>
+        </div>
+        <div class="np-field">
+          <label class="np-label">Why</label>
+          <textarea id="inpWhy" class="np-input np-autogrow" rows="1" style="resize:none; overflow:hidden;" placeholder="Why did it happen? (causes, motives, background factors)"></textarea>
+        </div>
+        <div class="np-field">
+          <label class="np-label">How</label>
+          <textarea id="inpHow" class="np-input np-autogrow" rows="1" style="resize:none; overflow:hidden;" placeholder="How did it happen or unfold? (process, sequence of events)"></textarea>
+        </div>
+
+        <div class="np-field">
+          <label class="np-label">Author name</label>
+          <input id="inpAuthorName" class="np-input" type="text" placeholder="Reporter name (optional)" />
+        </div>
+        <div class="np-field">
+          <label class="np-label">Location</label>
+          <input id="inpDateline" class="np-input" type="text" placeholder="Dateline (city, country) (optional)" />
+        </div>
+      </div>
+
+      <div class="np-section">
+        <div class="np-section-title">Output Controls</div>
+
+        <div class="np-field">
+          <label class="np-label">Choose Style</label>
+          <select id="styleSelect" class="np-input">
+            <option value="agency">News Agency</option>
+	    <option value="magazine">Magazine</option>
+	    <option value="newspaper" selected>Newspaper</option>
+            <option value="news_site">News Site</option>
+            <option value="radio">Radio</option>
+      	    <option value="tv">TV</option>
+          </select>
+        </div>
+
+        <div class="np-field">
+          <label class="np-label">Tone</label>
+          <select id="selTone" class="np-input">
+            <option value="1">Neutral</option>
+            <option value="2" selected>Informative</option>
+            <option value="3">Formal</option>
+            <option value="4">Assertive</option>
+            <option value="5">Dramatic</option>
+            <option value="6">Emotional</option>
+            <option value="7">Analytical</option>
+          </select>
+        </div>
+
+        <div class="np-field">
+          <label class="np-label">Length</label>
+          <select id="selLength" class="np-input">
+            <option value="short">Short</option>
+            <option value="medium" selected>Medium</option>
+            <option value="long">Long</option>
+          </select>
+        </div>
+
+        <div class="np-field">
+          <label class="np-label">Target words (optional)</label>
+          <input id="inpTargetWords" class="np-input" type="number" min="120" step="10" placeholder="e.g., 400" />
+        </div>
+      </div>
+
+      <div class="np-section">
+  <div class="np-section-title">Record Speech</div>
+  <div class="np-hint">Record interviews, press conferences or quick notes. Clips are stored inside the app and listed below.</div>
+
+  <!-- CONTROLS: Record | Clip name | Upload -->
+  <div class="np-row np-rec-controls" style="gap:8px; align-items:center; margin-top:10px; flex-wrap:wrap;">
+    <button id="btnMic" class="btn btn-secondary" type="button">Record</button>
+
+    <!-- Clip name (label kaldırıldı; placeholder yeterli) -->
+    <input id="inpClipName" class="np-input" type="text"
+           placeholder="Clip name"
+           style="width:160px; min-width:100px; max-width:45vw; flex:0 1 auto;" />
+
+    <button id="btnImportAudio" class="btn btn-secondary" type="button">Upload</button>
+  </div>
+
+  <!-- STATUS + INFO UNDER CONTROLS -->
+  <div class="np-row" style="gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap;">
+    <div id="genStatus" class="np-hint" style="margin:0; flex:1 1 220px;"></div>
+    <div class="np-hint" style="margin:0; flex:2 1 320px;">Upload a file and keep it inside the app for transcription.</div>
+  </div>
+
+  <!-- LIST (yerini koruyoruz) -->
+  <div id="voiceList" style="margin-top:12px"></div>
+
+  <div class="np-section" style="padding:0; margin-top:14px; border-top:1px solid var(--border); padding-top:14px;">
+    <div class="np-row" style="align-items:center; justify-content:space-between; gap:10px;">
+  <div class="np-section-title" style="margin:0;">Speech-to-Text</div>
+  <button id="btnKeySetupSpeech" class="btn btn-secondary" type="button" title="OpenAI Key Setup">
+    Setup
+  </button>
+</div>
+
+      <div>
+  <!-- Only shown when needed (ui.js controls) -->
+  <div id="keyStatusSpeech" class="np-hint" style="margin:0; display:none;"></div>
+
+  <!-- Only shown when Auto-transcribe is ON (ui.js controls) -->
+  <div id="sttInfoHint" class="np-hint" style="display:none;">
+    Audio is uploaded to OpenAI for transcription. The transcript is added to the Add Details area.
+  </div>
+</div>
+
+
+          <label class="np-label" style="margin-top:10px; display:flex; align-items:center; gap:10px;">
+            <input id="chkAutoTranscribe" type="checkbox" />
+            <span>Auto-transcribe new recordings</span>
+          </label>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- RIGHT COLUMN -->
+    <section class="np-panel">
+      <div class="np-section">
+        <div class="np-row" style="align-items:center; justify-content:space-between; gap:10px;">
+  <div class="np-section-title" style="margin:0;">Add Details / Paste Press Release / Interview Text</div>
+
+  <button id="btnDetailsTip" class="btn btn-secondary" type="button" title="Tip">
+    💡
+  </button>
+</div>
+        <textarea id="txtSource" class="np-textarea" placeholder="Paste press release, interview notes, speech transcript, briefing notes..."></textarea>
+        <div id="precheckHint" class="np-hint"></div>
+
+<div class="np-row np-generate-row" style="gap:8px; margin-top:10px;">
+  <button id="btnGenerate" class="btn btn-primary" type="button">
+    Generate News
+  </button>
+
+  <button id="btnNewNews" class="btn np-btn-new" type="button">
+    New Work
+  </button>
+
+  <button id="btnImportant" class="btn np-btn-important" type="button">
+    Important
+  </button>
+
+  <div id="costInfo" class="np-hint" style="margin:0; margin-left:auto;"></div>
+</div>
+
+      </div>
+
+      <div class="np-section">
+        <div class="np-section-title">Draft News – Headlines, Spots/Keylines and Quotes</div>
+                <div id="draftOptions" class="np-options"></div>
+<textarea id="draftOutput" class="np-textarea" placeholder="Draft output will appear here after Generate."></textarea>
+	<div class="np-hint output-resize-hint" style="text-align:right; margin-top:2px;">
+  Tip: Drag the bottom-right corner to resize this output area (desktop).
+</div>
+
+        <div class="np-row" style="gap:8px; margin-top:10px; flex-wrap:wrap;" id="versionsTabs"></div>
+      </div>
+
+      <div class="np-section">
+        <div class="np-row" style="gap:8px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+          <div class="np-row" style="gap:8px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+  <button id="btnBuildFinal" class="btn" type="button">Build Final</button>
+  <div class="np-section-title" style="margin:0">Build Final News</div>
+</div>
+        <textarea id="finalOutput" class="np-textarea" placeholder="Final news will appear here."></textarea>
+
+<div class="np-hint output-resize-hint"
+     style="width:100%; flex: 0 0 100%; text-align:right; margin-top:2px;">
+  Tip: Drag the bottom-right corner to resize this output area (desktop).
+</div>
+
+        <div class="np-row" style="gap:8px; margin-top:10px; flex-wrap:wrap;">
+          <button id="btnGrammar" class="btn btn-secondary" type="button">Grammar</button>
+          <button id="btnPrecheck" class="btn btn-secondary" type="button">Precheck</button>
+
+          <div style="position:relative;">
+            <button id="btnSave" class="btn btn-secondary" type="button">Save</button>
+            <div id="saveMenu" class="np-menu" style="display:none; position:absolute; right:0; top:44px; min-width:160px;">
+              <button id="btnSaveTxt" class="np-menu-item" type="button">Save TXT</button>
+              <button id="btnSaveDocx" class="np-menu-item" type="button">Save DOCX</button>
+              <button id="btnSavePdf" class="np-menu-item" type="button">Save PDF</button>
+            </div>
+          </div>
+
+          <button id="btnCopyFinal" class="btn btn-secondary" type="button">Copy</button>
+          <button id="btnShareFinal" class="btn btn-secondary" type="button">Share</button>
+        </div>
+      </div>
+  
+<div class="np-hint np-safety-disclaimer" style="margin-top:6px; font-size:11px; font-weight:600;">
+  AI can make mistakes. Check your important news carefully before publishing.
+</div>
+    </section>
+  </main>
+  <!-- OpenAI Key Setup Modal (single source of truth) -->
+<div id="keyModalOverlay" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.55);">
+  <div id="keyModalBox"
+       style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+              width:min(560px, 92vw); background:var(--panel);
+              border:1px solid var(--border); border-radius:12px;
+              box-shadow:0 12px 40px rgba(0,0,0,0.45); padding:14px;">
+
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <div style="font-weight:800;">OpenAI Key Setup</div>
+      <button id="btnKeyModalClose" type="button"
+              class="btn btn-secondary"
+              style="padding:6px 10px; line-height:1;">✕</button>
+    </div>
+
+    <div id="keyModalMainHint" class="np-hint" style="margin-top:10px;">
+  Your key is stored on this device. It is used for OpenAI news generation, “Transcript Speech”, and live transcription.
+</div>
+
+    <div class="np-field" style="margin-top:12px;">
+      <label class="np-label">OpenAI API Key</label>
+      <input id="inpKeyModal" class="np-input" type="password" placeholder="sk-..." autocomplete="off" />
+      <div class="np-hint" style="margin-top:6px;">
+        Get your key: <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer"><strong>API Keys</strong></a>
+        · <a href="https://openai.com/pricing" target="_blank" rel="noopener noreferrer"><strong>Pricing</strong></a>
+      </div>
+    </div>
+
+    <div class="np-row" style="gap:8px; margin-top:12px; justify-content:flex-end; flex-wrap:wrap;">
+      <button id="btnKeyModalDelete" class="btn btn-secondary" type="button">Delete</button>
+      <button id="btnKeyModalSave" class="btn btn-primary" type="button">Save</button>
+    </div>
+
+    <div id="keyModalMsg" class="np-hint" style="margin-top:10px;"></div>
+  </div>
+</div>
+<!-- /OpenAI Key Setup Modal -->
+
+  <script type="module" src="./app/main.js"></script>
+<script type="module">
+  const btn = document.getElementById("btnToggleDark");
+  const darkLink = document.querySelector('link[href$="./css/dark.css"], link[href$="css/dark.css"]');
+
+  function apply(theme){
+    document.documentElement.setAttribute("data-theme", theme);
+    if (darkLink) darkLink.disabled = (theme !== "dark");
+    // buton ikonunu da senkronla (istersen değiştir)
+    if (btn) btn.textContent = (theme === "dark") ? "🌙" : "☀️";
+    try { localStorage.setItem("np_theme", theme); } catch {}
+    if (typeof applyThemeLogo === "function") applyThemeLogo();
+  }
+
+  // boot: saved theme > html attr > default dark
+  const saved = (() => { try { return localStorage.getItem("np_theme"); } catch { return null; } })();
+  const cur = saved || document.documentElement.getAttribute("data-theme") || "dark";
+  apply(cur);
+
+  if (btn) {
+    btn.addEventListener("click", () => {
+      const now = document.documentElement.getAttribute("data-theme") || "dark";
+      apply(now === "dark" ? "light" : "dark");
+    });
+  }
+</script>
+</body>
+</html>

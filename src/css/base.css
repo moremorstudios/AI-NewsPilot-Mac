@@ -1,0 +1,312 @@
+/* FILE: src/css/base.css */
+
+/* ---------- THEME TOKENS ---------- */
+:root{
+  --bg: #ffffff;
+  --panel: #edeff0;
+  --panel2: #e6ebf2;
+  --text: #121826;
+  --muted: #5b6475;
+  --border: #d9deea;
+
+  --field: #ffffff;
+  --fieldText: #121826;
+  --fieldPlaceholder: #8a93a7;
+
+  --btn: #ffa500;
+  --btnText: #2d3833;
+
+  --secondary: #375749;
+  --secondaryText: #ffffff;
+
+  --accent: #ffa500;   /* orange */
+  --accentText: #2d3833;
+
+  --danger: #e11d48;
+  --warn: #c2410c;
+
+  --radius: 14px;
+  --pad: 14px;
+  --gap: 12px;
+
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-title: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  --shadow: 0 10px 30px rgba(16,24,40,.08);
+}
+
+
+/* ---------- GLOBAL BASE ---------- */
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+
+body{
+  margin:0;
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* ---------- PANELS / TEXT ---------- */
+.np-panel{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+}
+
+.np-hint{
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+.openai-links{
+  margin: 0;
+  padding: 0;
+  line-height: 1.22;
+}
+
+/* Screen-reader only (visually hidden) */
+.sr-only{
+  position:absolute !important;
+  width:1px !important;
+  height:1px !important;
+  padding:0 !important;
+  margin:-1px !important;
+  overflow:hidden !important;
+  clip:rect(0,0,0,0) !important;
+  white-space:nowrap !important;
+  border:0 !important;
+}
+
+.np-hint{ font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+/* Only this OpenAI note: smaller text */
+.openai-note{ font-size: 12px; line-height: 1.22; }
+
+html[data-theme="dark"] .openai-note a:hover{
+  color: rgba(255,255,255,.92);
+}
+
+html[data-theme="light"] .openai-note a:hover{
+  color: rgba(17,24,39,.85);
+}
+
+.np-label{
+  display:block;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.np-label > *{ margin-top:6px; }
+
+.np-section-title{
+  font-family: var(--font-title);
+  font-weight: 900;
+  letter-spacing: .2px;
+  margin-bottom: 10px;
+  margin-top: 15px;
+}
+.np-section-title-main{
+  font-size: 1.4em; /* yaklaşık %20 daha büyük */
+}
+
+pre{ white-space:pre-wrap; word-break:break-word; }
+
+/* ---------- FIELDS ---------- */
+.np-input,.np-textarea,select,
+input[type="text"],input[type="password"],input[type="number"],textarea{
+  width:100%;
+  padding: 10px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--field);
+  color: var(--fieldText);
+  outline: none;
+}
+
+.np-input::placeholder,
+.np-textarea::placeholder,
+input::placeholder,
+textarea::placeholder{
+  color: var(--fieldPlaceholder);
+}
+
+.np-input:focus,.np-textarea:focus,select:focus,input:focus,textarea:focus{
+  border-color: rgba(255,165,0,.65);
+}
+
+.np-textarea{
+  resize: vertical;
+  min-height: 180px;
+  font-family: var(--font-body);
+  line-height: 1.45;
+}
+
+/* Output areas: big by default but can be resized smaller on desktop */
+#draftOutput{
+  height: 540px;      /* default big */
+  min-height: 180px;  /* allow shrinking */
+  resize: vertical;
+  overflow: auto;
+}
+
+#finalOutput{
+  height: 360px;      /* default big */
+  min-height: 180px;  /* allow shrinking */
+  resize: vertical;
+  overflow: auto;
+}
+
+@media (max-width: 900px){
+  #draftOutput{ height: 360px; }
+  #finalOutput{ height: 260px; }
+}
+
+
+/* ---------- BUTTONS ---------- */
+.btn{
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--btn);
+  color: var(--btnText);
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 800;
+}
+.btn:hover{ filter: brightness(1.03); }
+.btn:disabled{ opacity:.55; cursor:not-allowed; }
+
+.btn-primary{
+  background: var(--accent);
+  color: var(--accentText);
+  border-color: rgba(0,0,0,.08);
+}
+
+.btn-secondary{
+  background: var(--secondary);
+  color: var(--secondaryText);
+}
+
+/* Docs / About (?) button – same size as other buttons, but orange “?” */
+
+/* Ortak stil: biraz daha büyük, ortalanmış ve kalın */
+#btnDocs{
+  font-weight: 900;
+  font-size: 18px;       /* ? biraz iri */
+  line-height: 1;
+  padding: 8px 12px;     /* yükseklik generate/theme ile uyumlu */
+  min-width: 40px;
+  text-align: center;
+}
+
+/* Light theme: açık arka plan + turuncu işaret */
+html[data-theme="light"] #btnDocs{
+  background: #f9fafb;        /* Theme butonuna yakın açık ton */
+  color: #ff9800;             /* turuncu ? */
+  border-color: var(--border);
+}
+
+/* Dark theme: koyu arka plan + turuncu işaret */
+html[data-theme="dark"] #btnDocs{
+  background: #111827;        /* koyu gri / gece tonu */
+  color: #ffb347;             /* biraz daha sıcak turuncu */
+  border-color: rgba(255,255,255,.18);
+}
+
+
+.gen-hint{
+  margin-left: 10px;
+  display: inline-block;
+  max-width: 520px;
+  line-height: 1.22;
+  font-size: 11px;
+}
+
+/* ---------- WARN BOX ---------- */
+.np-warning{
+  margin-top:10px;
+  padding:10px 12px;
+  border:1px solid rgba(194,65,12,.25);
+  background: rgba(194,65,12,.10);
+  color: var(--warn);
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+/* ---------- LINKS (used near API key) ---------- */
+.np-link{
+  color: var(--warn);
+  text-decoration: none;
+  font-weight: 800;
+  margin-left: 8px;
+}
+.np-link:hover{ text-decoration: underline; }
+.np-small{ font-size: 11px; opacity: .9; }
+
+/* ---------- POPUP MENUS ---------- */
+.np-menu{
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--field);
+  color: var(--fieldText);
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  padding: 6px;
+  z-index: 50;
+}
+.np-menu-item{
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  padding: 10px 10px;
+  cursor: pointer;
+  font-weight: 800;
+}
+.np-menu-item:hover{ background: rgba(255,165,0,.18); }
+
+/* ---------- VERSION TABS ---------- */
+.np-vtab{
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 10px;
+}
+
+/* Make field titles bold without changing size */
+.np-label{
+  font-weight: 700;
+  opacity: 1;
+}
+
+/* === Extra buttons next to Generate === */
+.np-generate-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Üç ana aksiyon butonunun aynı tabanı paylaşması için */
+.np-generate-row .btn {
+  min-width: 150px;
+  text-align: center;
+  padding: 10px 14px;
+  font-weight: 800;
+}
+
+/* “New Work” – mavi */
+.btn.np-btn-new {
+  background: #007bff;
+  color: #ffffff;
+  border-color: rgba(0,0,0,.08);
+}
+
+/* “Important” – haki/yeşil ton */
+.btn.np-btn-important {
+  background: #4f6f3e;
+  color: #ffffff;
+  border-color: rgba(0,0,0,.08);
+}

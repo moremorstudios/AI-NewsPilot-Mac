@@ -1,0 +1,307 @@
+/* FILE: src/css/layout.css */
+.np-wrap{ max-width: 1180px; margin: 0 auto; padding: 18px; }
+
+.np-header{
+  display:flex; align-items:center; justify-content:space-between;
+  gap: 14px; padding: 14px 16px;
+}
+.np-brand{ display:flex; align-items:center; gap: 12px; }
+.np-logo{ height:44px; width:auto; max-width:260px; border-radius: 0; display:block; }
+@media (max-width:520px){
+  .np-logo{ height:36px; max-width:200px; }
+}
+.np-title{ font-weight: 900; letter-spacing: .2px; margin:0; }
+.np-sub{ margin:2px 0 0; font-size: 12px; opacity: .85; }
+
+.np-header-actions{ display:flex; align-items:center; gap:10px; }
+
+.np-main{
+  margin-top: 14px;
+  display:grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 14px;
+}
+
+.np-panel{ padding: 14px; }
+
+.np-row{
+  display:flex;
+  gap: 12px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.np-row .np-input{ min-width: 240px; flex: 1 1 240px; }
+.np-row .btn{ white-space: nowrap; }
+/* Versions buttons row: keep space before Build Final section */
+#versionsTabs{
+  margin-bottom: 15px;
+}
+
+.np-field{ margin-bottom: 12px; }
+
+/* Field titles: aynı punto, daha belirgin */
+.np-label{
+  display:block;
+  margin-bottom: 6px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+
+.np-actions{ display:flex; flex-wrap:wrap; gap: 8px; margin-top: 10px; }
+.np-actions .btn{ white-space: nowrap; }
+
+.np-output{ margin-top: 14px; }
+.np-output pre{ margin: 0; padding: 12px; border-radius: 12px; border:1px solid var(--border); }
+
+@media (max-width: 900px){
+  .np-main{ grid-template-columns: 1fr; }
+  .np-header{ align-items:flex-start; flex-direction:column; }
+  .np-header-actions{ width:100%; justify-content:flex-end; }
+}
+
+/* Make secondary buttons clearly look like buttons */
+.btn.btn-secondary,
+.btn-secondary{
+  border: 1px solid rgba(0,0,0,.18);
+  box-shadow: 0 1px 2px rgba(0,0,0,.10);
+}
+
+.btn.btn-secondary:hover,
+.btn-secondary:hover{
+  box-shadow: 0 2px 6px rgba(0,0,0,.14);
+  transform: translateY(-1px);
+}
+
+.btn.btn-secondary:active,
+.btn-secondary:active{
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0,0,0,.10);
+}
+
+/* ===== FIX (FLEX): API Key rows -> input top, buttons bottom side-by-side ===== */
+#inpOpenAIKey,
+#inpSpeechKey{
+  width: 100% !important;
+  padding: 12px 12px;
+  font-size: 15px;
+}
+
+#inpOpenAIKey{ flex: 0 0 100%; order: 1; }
+#btnSaveKey{  flex: 1 1 0;   order: 2; width: 100%; }
+#btnDelKey{   flex: 1 1 0;   order: 3; width: 100%; }
+
+#inpSpeechKey{        flex: 0 0 100%; order: 1; }
+#btnSpeechSaveKey{    flex: 1 1 0;   order: 2; width: 100%; }
+#btnSpeechDelKey{     flex: 1 1 0;   order: 3; width: 100%; }
+
+/* Recorder controls row: responsive wrap */
+.np-rec-controls{
+  flex-wrap: wrap;
+}
+
+.np-rec-controls #inpClipName{
+  width: 200px;
+  min-width: 130px;
+  max-width: 45vw;
+}
+
+/* On very small screens, make clip name full width */
+@media (max-width: 420px){
+  .np-rec-controls #inpClipName{
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Voice row action buttons: keep spacing and allow wrap */
+.np-voice-actions{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Prevent any default margins collapsing spacing */
+.np-voice-actions .btn{
+  margin: 0;
+}
+
+/* Record button turns red while recording (light + dark) */
+#btnMic.is-recording{
+  background: var(--danger);
+  color: #fff;
+  border: 1px solid rgba(0,0,0,.22);
+  box-shadow: 0 2px 8px rgba(0,0,0,.20);
+}
+
+#btnMic.is-recording:hover{
+  filter: brightness(0.98);
+}
+
+#btnMic.is-recording:active{
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(0,0,0,.18);
+}
+
+/* Theme button must stay light in Light theme (independent from other buttons) */
+html[data-theme="light"] #btnToggleDark{
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid rgba(0,0,0,.18);
+  box-shadow: 0 1px 2px rgba(0,0,0,.10);
+}
+
+/* Theme button remains readable in Dark theme */
+html[data-theme="dark"] #btnToggleDark{
+  background: rgba(255,255,255,.12);
+  color: #162920;
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: 0 1px 2px rgba(0,0,0,.25);
+}
+
+#btnUpgrade{ background:#ffa500; color:#162920; border:1px solid rgba(0,0,0,.18); }
+#btnUpgrade:hover{ filter:brightness(.95); }
+#btnUpgrade:active{ filter:brightness(.90); }
+
+/* Draft Options (OPENAI->OPTIONS->BUILD_FINAL) */
+.np-options{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:10px;
+  padding:10px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  border-radius: 12px;
+}
+html[data-theme="light"] .np-options{
+  border:1px solid rgba(0,0,0,.10);
+  background: rgba(0,0,0,.03);
+}
+.np-opt-row{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  flex-wrap:wrap;
+}
+.np-opt-check{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex: 0 0 auto;
+  min-width: 200px;
+}
+.np-opt-check input{ transform: translateY(1px); }
+.np-opt-label{
+  font-weight: 700;
+  font-size: 13px;
+  opacity: 1;
+  color: var(--text);
+}
+
+.np-opt-meta{
+  font-size: 11px;
+  opacity: .80;
+  margin-left: 6px;
+}
+.np-opt-edit{
+  flex: 1 1 420px;
+  min-width: 260px;
+}
+/* Draft seçenek alanındaki textarea'lar:
+   5W1H kutuları ile aynı görünüm (hem light hem dark tema) */
+.np-opt-edit textarea{
+  width: 100%;
+  min-height: 44px;
+  max-height: 160px;
+  resize: vertical;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--field);
+  color: var(--fieldText);
+  outline: none;
+
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.np-opt-divider{
+  height:1px;
+  background: rgba(255,255,255,.08);
+  margin: 2px 0;
+}
+html[data-theme="light"] .np-opt-divider{ background: rgba(0,0,0,.08); }
+/* 5W1H textarea: keep SAME box/background/border as .np-input, only fix font + placeholder */
+textarea.np-input.np-autogrow{
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+
+  resize: none;
+  overflow: hidden;
+  min-height: 38px;
+}
+
+textarea.np-input.np-autogrow::placeholder{
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+}
+
+/* Match placeholder size to .np-input (fix textarea placeholder oversized) */
+textarea.np-input.np-autogrow{
+  font-size: 14px;        /* .np-input ile aynı olmalı */
+  line-height: 1.25;
+}
+
+textarea.np-input.np-autogrow::placeholder{
+  font-size: 14px;        /* author field hint ile aynı */
+  line-height: 1.25;
+}
+
+/* Key modal links: avoid default blue in dark theme */
+#keyModalBox a{
+  color: inherit;
+  opacity: .92;
+  text-decoration: underline;
+}
+#keyModalBox a:hover{
+  opacity: 1;
+}
+
+/* Light temada TIP (💡) butonu: panel rengi + koyu çerçeve */
+html[data-theme="light"] #btnDetailsTip{
+  background-color: var(--panel);       /* panel rengi: base.css'teki --panel */
+  color: #f59e0b;                       /* ampul turuncusu */
+  border: 1px solid rgba(0, 0, 0, 0.25);/* koyu çerçeve */
+}
+
+html[data-theme="dark"] #btnDetailsTip{
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 1px solid rgba(255,255,255,.22);
+  color: #f59e0b;
+}
+
+/* Safety disclaimer: push to bottom of right panel and make it distinct */
+.np-panel{
+  display:flex;
+  flex-direction:column;
+}
+
+.np-safety-disclaimer{
+  margin-top:auto !important;     /* pushes it to bottom */
+  text-align:center !important;
+  font-weight:800 !important;
+  padding-top:14px;
+}

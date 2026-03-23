@@ -1,0 +1,107 @@
+{
+  "name": "ai-newspilot-desktop",
+  "version": "1.0.0",
+  "description": "AI NewsPilot Desktop (Offline-first)",
+  "main": "electron/main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:nsis": "electron-builder --win nsis",
+    "dist:appx": "electron-builder --win appx",
+    "dist:store": "electron-builder --win appx --publish never",
+    "dist:mac": "electron-builder --mac dmg zip",
+    "dist:mac:x64": "electron-builder --mac dmg zip --x64",
+    "dist:mac:arm64": "electron-builder --mac dmg zip --arm64"
+  },
+  "devDependencies": {
+    "electron": "40.0.0",
+    "electron-builder": "26.5.0"
+  },
+  "build": {
+    "appId": "MoremorStudios.AINewsPilot",
+    "productName": "AI NewsPilot",
+    "files": [
+      "electron/**/*",
+      "src/**/*",
+      "tools/**/*",
+      "models/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "bridge/StoreBridge/bin/Release/net8.0-windows10.0.19041.0",
+        "to": "bridge/StoreBridge"
+      }
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "tools/**",
+      "models/**"
+    ],
+    "directories": {
+      "buildResources": "build"
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "dmg": {
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "win": {
+      "icon": "src/assets/icons/icon.ico",
+      "target": [
+        {
+          "target": "appx",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "appx": {
+      "identityName": "MoremorStudios.AINewsPilot",
+      "publisher": "CN=1F4FD1A8-7EAF-41F6-A8D0-E26B6D94C83B",
+      "publisherDisplayName": "Moremor Studios",
+      "displayName": "AI NewsPilot",
+      "applicationId": "AINewsPilot",
+      "languages": [
+        "en-US"
+      ],
+      "backgroundColor": "#000000"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "openai": "^6.22.0",
+    "undici": "^6.21.0",
+    "electron-updater": "^6.6.2",
+    "electron-log": "^5.3.0"
+  },
+  "author": "MoreMor LLC"
+}
