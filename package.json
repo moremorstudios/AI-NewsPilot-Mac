@@ -20,6 +20,7 @@
   "build": {
     "appId": "MoremorStudios.AINewsPilot",
     "productName": "AI NewsPilot",
+    "buildResources": "build-resources",
     "files": [
       "electron/**/*",
       "src/**/*",
