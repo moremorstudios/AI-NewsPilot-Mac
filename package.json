@@ -18,44 +18,47 @@
     "electron-builder": "26.5.0"
   },
   "build": {
-    "appId": "MoremorStudios.AINewsPilot",
-    "productName": "AI NewsPilot",
-    "buildResources": "build-resources",
-    "files": [
-      "electron/**/*",
-      "src/**/*",
-      "tools/**/*",
-      "models/**/*",
-      "package.json"
-    ],
-    "asar": true,
-    "asarUnpack": [
-      "tools/**",
-      "models/**"
-    ],
-    "mac": {
-      "category": "public.app-category.productivity",
-      "target": [
-        {
-          "target": "dmg",
-          "arch": [
-            "x64",
-            "arm64"
-          ]
-        },
-        {
-          "target": "zip",
-          "arch": [
-            "x64",
-            "arm64"
-          ]
-        }
-      ]
-    },
-    "dmg": {
-      "artifactName": "${productName}-${version}-${arch}.${ext}"
-    }
+  "appId": "MoremorStudios.AINewsPilot",
+  "productName": "AI NewsPilot",
+  "directories": {
+    "buildResources": "build-resources"
   },
+  "icon": "build-resources/icon.png",
+  "files": [
+    "electron/**/*",
+    "src/**/*",
+    "tools/**/*",
+    "models/**/*",
+    "package.json"
+  ],
+  "asar": true,
+  "asarUnpack": [
+    "tools/**",
+    "models/**"
+  ],
+  "mac": {
+    "category": "public.app-category.productivity",
+    "target": [
+      {
+        "target": "dmg",
+        "arch": [
+          "x64",
+          "arm64"
+        ]
+      },
+      {
+        "target": "zip",
+        "arch": [
+          "x64",
+          "arm64"
+        ]
+      }
+    ]
+  },
+  "dmg": {
+    "artifactName": "${productName}-${version}-${arch}.${ext}"
+  }
+},
   "dependencies": {
     "archiver": "^7.0.1",
     "openai": "^6.22.0",
